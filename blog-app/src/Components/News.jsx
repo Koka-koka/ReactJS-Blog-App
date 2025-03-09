@@ -22,13 +22,26 @@ const News = () => {
   const [headline, setHeadline] = useState(null);
   const [news, setNews] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("general");
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    /**
+     * Fetches news articles based on the selected category and search query.
+     * If no search query is provided, fetches top headlines for the selected category.
+     * If a search query is provided, fetches search results for the query.
+     * Sets the state of the news component with the fetched news articles.
+     * @return {Promise<void>} A Promise that resolves when the news articles have been fetched.
+     */
     const fetchNews = async () => {
       try {
-        const response = await axios.get(
-          `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=e594a198a130f391ac23bccfbced3fa8`
-        );
+        let url = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=e594a198a130f391ac23bccfbced3fa8`;
+
+        if (searchQuery) {
+          url = `https://gnews.io/api/v4/search?q=${searchQuery}&lang=en&apikey=9c404c552f6102517c9c531e4d8475da`;
+        }
+
+        const response = await axios.get(url);
 
         const fetchedNews = response.data.articles;
 
@@ -45,20 +58,50 @@ const News = () => {
       }
     };
     fetchNews();
-  }, [selectedCategory]);
+  }, [selectedCategory, searchQuery]);
+
+  /**
+   * Handles the change of news category.
+   *
+   * Prevents the default action of the event and updates the selected category state.
+   *
+   * @param {Event} e - The event object associated with the category change.
+   * @param {string} category - The new category to be selected.
+   */
 
   const handleCategoryChange = (e, category) => {
     e.preventDefault();
     setSelectedCategory(category);
   };
 
+  /**
+   * Handles the search query submission.
+   *
+   * Prevents the default form submission action, updates the search query state
+   * with the current search input value, and resets the search input to an empty string.
+   *
+   * @param {Event} e - The event object associated with the search form submission.
+   */
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchQuery(searchInput);
+    setSearchInput("");
+  };
+
   return (
     <div className="news">
+      {/* Header */}
       <header className="news__header">
         <h1 className="logo">News Blog</h1>
         <div className="search-bar">
-          <form>
-            <input type="text" placeholder="Search News..." />
+          {/* Search Bar */}
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="Search News..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
             <button type="submit">
               <i className="fa-solid fa-magnifying-glass"></i>
             </button>
@@ -67,12 +110,14 @@ const News = () => {
       </header>
       <div className="news__content">
         <div className="navbar">
+          {/* User */}
           <div className="user">
             <img src={userImg} alt="User Image" />
             <p>Username</p>
           </div>
           <nav className="nav">
             <h2 className="nav__heading">Categories</h2>
+            {/* Navigation */}
             <ul className="nav__menu">
               {categories.map((category) => (
                 <li className="nav__item" key={category}>
@@ -94,6 +139,7 @@ const News = () => {
           </nav>
         </div>
         <div className="news__section">
+          {/* News Headline*/}
           <div className="headline">
             <img src={headline?.image || noImg} alt={headline?.title} />
             <h2 className="headline__title">
@@ -101,6 +147,7 @@ const News = () => {
               <i className="fa-regular fa-bookmark bookmark"></i>
             </h2>
           </div>
+          {/* News Grid */}
           <div className="news__grid">
             {news.map((article, index) => (
               <div className="news__grid-item" key={index}>

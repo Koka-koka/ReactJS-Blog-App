@@ -1,0 +1,82 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal__content {
+  width: 90%;
+  max-width: 60rem;
+  height: auto;
+  max-height: 100%;
+  background-color: #111214;
+  padding: 4rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 5rem 4rem rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+.modal__image {
+  width: 100%;
+  height: auto;
+  max-height: 30rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  opacity: 0.5;
+}
+
+.modal__title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.1rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.modal__source,
+.modal__date {
+  font-family: "Comfortaa", sans-serif;
+  font-size: 1.4rem;
+  color: #bbb;
+  margin-bottom: 1rem;
+}
+
+.modal__text {
+  font-size: 1.6rem;
+  color: #ddd;
+  line-height: 2.7rem;
+  margin-bottom: 2rem;
+}
+
+.modal__link {
+  display: inline-block;
+  font-size: 1.6rem;
+  background: linear-gradient(to right, #b88efc, #9577f4);
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal__link:hover {
+  background: linear-gradient(to right, #9577f4, #b88efc);
+}
+
+.modal__link:active {
+  transform: scale(0.95);
+}

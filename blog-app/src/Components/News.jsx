@@ -6,6 +6,7 @@ import userImg from "../assets/images/user.jpg";
 import noImg from "../assets/images/no-img.png";
 import axios from "axios";
 import NewsModal from "./NewsModal";
+import Bookmarks from "./Bookmarks";
 
 const categories = [
   "general",
@@ -27,39 +28,45 @@ const News = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const [bookmarks, setBookmarks] = useState([]);
+  const [showBookmarks, setShowBookmarks] = useState(false);
 
-  useEffect(() => {
-    /**
-     * Fetches news articles based on the selected category and search query.
-     * If no search query is provided, fetches top headlines for the selected category.
-     * If a search query is provided, fetches search results for the query.
-     * Sets the state of the news component with the fetched news articles.
-     * @return {Promise<void>} A Promise that resolves when the news articles have been fetched.
-     */
-    const fetchNews = async () => {
-      try {
-        let url = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=e594a198a130f391ac23bccfbced3fa8`;
+  /**
+   * Fetches news articles based on the selected category and search query.
+   * If no search query is provided, fetches top headlines for the selected category.
+   * If a search query is provided, fetches search results for the query.
+   * Sets the state of the news component with the fetched news articles.
+   * @return {Promise<void>} A Promise that resolves when the news articles have been fetched.
+   */
+  const fetchNews = async () => {
+    try {
+      let url = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=e594a198a130f391ac23bccfbced3fa8`;
 
-        if (searchQuery) {
-          url = `https://gnews.io/api/v4/search?q=${searchQuery}&lang=en&apikey=9c404c552f6102517c9c531e4d8475da`;
-        }
-
-        const response = await axios.get(url);
-
-        const fetchedNews = response.data.articles;
-
-        fetchedNews.forEach((article) => {
-          if (!article.image) {
-            article.image = noImg;
-          }
-        });
-
-        setHeadline(fetchedNews[0]);
-        setNews(fetchedNews.slice(1, 7));
-      } catch (error) {
-        console.error("Error fetching news:", error);
+      if (searchQuery) {
+        url = `https://gnews.io/api/v4/search?q=${searchQuery}&lang=en&apikey=9c404c552f6102517c9c531e4d8475da`;
       }
-    };
+
+      const response = await axios.get(url);
+
+      const fetchedNews = response.data.articles;
+
+      fetchedNews.forEach((article) => {
+        if (!article.image) {
+          article.image = noImg;
+        }
+      });
+
+      setHeadline(fetchedNews[0]);
+      setNews(fetchedNews.slice(1, 7));
+    } catch (error) {
+      console.error("Error fetching news:", error);
+    }
+  };
+
+  /**
+   * Fetches news articles when the selected category or search query changes.
+   */
+  useEffect(() => {
     fetchNews();
   }, [selectedCategory, searchQuery]);
 
@@ -91,9 +98,55 @@ const News = () => {
     setSearchInput("");
   };
 
+  /**
+   * Handles the click event on an article.
+   *
+   * Updates the selected article state with the clicked article and shows the modal.
+   *
+   * @param {Object} article - The clicked article object.
+   */
   const handleArticleClick = (article) => {
     setSelectedArticle(article);
     setShowModal(true);
+  };
+
+  /**
+   * Retrieves the saved bookmarks from local storage and updates the bookmarks state.
+   */
+  useEffect(() => {
+    const savedBookmarks = localStorage.getItem("bookmarks");
+    if (savedBookmarks) {
+      setBookmarks(JSON.parse(savedBookmarks));
+    }
+  }, []);
+
+  /**
+   * Handles the click event on the bookmark button.
+   *
+   * Updates the bookmarks state and local storage with the clicked article.
+   * If the article is already bookmarked, removes it from bookmarks and local storage.
+   * If the article is not bookmarked, adds it to bookmarks and local storage.
+   *
+   * @param {Object} article - The clicked article object.
+   */
+  const handleBookmarkClick = (article) => {
+    if (bookmarks.some((bookmark) => bookmark.url === article.url)) {
+      setBookmarks((prevBookmarks) =>
+        prevBookmarks.filter((bookmark) => bookmark.url !== article.url)
+      );
+      localStorage.setItem(
+        "bookmarks",
+        JSON.stringify(
+          bookmarks.filter((bookmark) => bookmark.url !== article.url)
+        )
+      );
+    } else {
+      setBookmarks((prevBookmarks) => [...prevBookmarks, article]);
+      localStorage.setItem(
+        "bookmarks",
+        JSON.stringify([...bookmarks, article])
+      );
+    }
   };
 
   return (
@@ -139,8 +192,17 @@ const News = () => {
                 </li>
               ))}
               <li className="nav__item">
-                <a className="nav__link" href="#">
-                  Bookmarks <i className="fa-regular fa-bookmark"></i>
+                <a
+                  className="nav__link"
+                  href="#"
+                  onClick={() => setShowBookmarks(true)}
+                >
+                  Bookmarks{" "}
+                  <i
+                    className={`${
+                      bookmarks.length > 0 ? "fa-solid" : "fa-regular"
+                    } fa-bookmark`}
+                  ></i>
                 </a>
               </li>
             </ul>
@@ -155,7 +217,17 @@ const News = () => {
             <img src={headline?.image || noImg} alt={headline?.title} />
             <h2 className="headline__title">
               {headline?.title}
-              <i className="fa-regular fa-bookmark bookmark"></i>
+              <i
+                className={`${
+                  bookmarks.some((bookmark) => bookmark.url === headline?.url)
+                    ? "fa-solid"
+                    : "fa-regular"
+                } fa-bookmark bookmark`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleBookmarkClick(headline);
+                }}
+              ></i>
             </h2>
           </div>
           {/* News Grid */}
@@ -169,7 +241,17 @@ const News = () => {
                 <img src={article.image || noImg} alt={article.title} />
                 <h3>
                   {article.title}
-                  <i className="fa-regular fa-bookmark bookmark"></i>
+                  <i
+                    className={`${
+                      bookmarks.some((bookmark) => bookmark.url === article.url)
+                        ? "fa-solid"
+                        : "fa-regular"
+                    } fa-bookmark bookmark`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleBookmarkClick(article);
+                    }}
+                  ></i>
                 </h3>
               </div>
             ))}
@@ -179,6 +261,13 @@ const News = () => {
           show={showModal}
           article={selectedArticle}
           onClose={() => setShowModal(false)}
+        />
+        <Bookmarks
+          show={showBookmarks}
+          bookmarks={bookmarks}
+          onClose={() => setShowBookmarks(false)}
+          onSelectArticle={handleArticleClick}
+          onDeleteBookmark={handleBookmarkClick}
         />
         <div className="my-blogs">My Blogs</div>
         <div className="weather-calendar">

@@ -1,4 +1,3 @@
-import React from "react";
 import "./NewsModal.css";
 
 const NewsModal = ({ show, article, onClose }) => {

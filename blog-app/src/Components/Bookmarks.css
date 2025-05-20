@@ -1,3 +1,9 @@
+.bookmarks .modal__content {
+  max-height: 550px;
+  overflow-y: auto;
+  scrollbar-color: #1d1e20 #111214;
+}
+
 .bookmarks__heading {
   font-family: "Bebas Neue", sans-serif;
   font-size: 3rem;

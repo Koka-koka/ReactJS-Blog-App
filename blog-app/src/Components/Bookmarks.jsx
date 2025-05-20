@@ -1,4 +1,3 @@
-import React from "react";
 import "./Bookmarks.css";
 import noImg from "../assets/images/no-img.png";
 

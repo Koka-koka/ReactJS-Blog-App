@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Weather from "./Weather";
 import Calendar from "./Calendar";
 import "./News.css";
-import userImg from "../assets/images/user.jpg";
+import userImg from "../assets/images/user.png";
 import noImg from "../assets/images/no-img.png";
 import axios from "axios";
 import NewsModal from "./NewsModal";
@@ -153,7 +153,7 @@ const News = () => {
     <div className="news">
       {/* Header */}
       <header className="news__header">
-        <h1 className="logo">News Blog</h1>
+        <h1 className="logo">News App</h1>
         <div className="search-bar">
           {/* Search Bar */}
           <form onSubmit={handleSearch}>

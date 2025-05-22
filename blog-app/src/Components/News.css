@@ -238,7 +238,7 @@
 }
 
 .my-blogs {
-  width: clamp(20rem, 27cqi, 20%);
+  width: clamp(25rem, 27cqi, 25%);
   height: 100%;
   background-color: #111214;
   border-radius: 1rem;

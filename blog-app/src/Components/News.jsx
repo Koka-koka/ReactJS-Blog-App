@@ -20,7 +20,7 @@ const categories = [
   "nation",
 ];
 
-const News = () => {
+const News = ({ showBlogs }) => {
   const [headline, setHeadline] = useState(null);
   const [news, setNews] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("general");
@@ -175,6 +175,7 @@ const News = () => {
           <div className="user">
             <img src={userImg} alt="User Image" />
             <p>Username</p>
+            <button onClick={() => showBlogs()}>Admin Panel</button>
           </div>
           <nav className="nav">
             <h2 className="nav__heading">Categories</h2>
@@ -269,13 +270,18 @@ const News = () => {
           onSelectArticle={handleArticleClick}
           onDeleteBookmark={handleBookmarkClick}
         />
-        <div className="my-blogs">My Blogs</div>
+        <div className="my-blogs">
+          <h3>My Blogs</h3>
+        </div>
         <div className="weather-calendar">
           <Weather />
           <Calendar />
         </div>
       </div>
-      <footer className="news__footer">Footer</footer>
+      <footer className="news__footer">
+        <p>News & Blog App</p>
+        <p>Copyright &copy; {new Date().getFullYear()}, All Rights Reserved</p>
+      </footer>
     </div>
   );
 };

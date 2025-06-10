@@ -20,7 +20,8 @@ const categories = [
   "nation",
 ];
 
-const News = ({ showBlogs }) => {
+// eslint-disable-next-line react/prop-types
+const News = ({ showBlogs, blogs }) => {
   const [headline, setHeadline] = useState(null);
   const [news, setNews] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("general");
@@ -175,7 +176,7 @@ const News = ({ showBlogs }) => {
           <div className="user">
             <img src={userImg} alt="User Image" />
             <p>Username</p>
-            <button onClick={() => showBlogs()}>Admin Panel</button>
+            <button onClick={() => showBlogs()}>Add Blog Post</button>
           </div>
           <nav className="nav">
             <h2 className="nav__heading">Categories</h2>
@@ -271,7 +272,24 @@ const News = ({ showBlogs }) => {
           onDeleteBookmark={handleBookmarkClick}
         />
         <div className="my-blogs">
-          <h3>My Blogs</h3>
+          <h3 className="my-blogs__heading">My Blogs</h3>
+          <div className="my-blogs__posts">
+            {/* eslint-disable-next-line react/prop-types */}
+            {blogs.map((blog, index) => (
+              <div className="my-blogs__post" key={index}>
+                <img src={blog.image} alt={blog.title} />
+                <h3>{blog.title}</h3>
+                <div className="my-blogs__post-btns">
+                  <button className="my-blogs__post-edit">
+                    <i className="bx bxs-edit"></i>
+                  </button>
+                  <button className="my-blogs__post-delete">
+                    <i className="bx bxs-x-circle"></i>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
         <div className="weather-calendar">
           <Weather />

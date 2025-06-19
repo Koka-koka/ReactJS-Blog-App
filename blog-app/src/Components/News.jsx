@@ -7,6 +7,7 @@ import noImg from "../assets/images/no-img.png";
 import axios from "axios";
 import NewsModal from "./NewsModal";
 import Bookmarks from "./Bookmarks";
+import BlogsModal from "./BlogsModal";
 
 const categories = [
   "general",
@@ -21,7 +22,7 @@ const categories = [
 ];
 
 // eslint-disable-next-line react/prop-types
-const News = ({ showBlogs, blogs }) => {
+const News = ({ showBlogs, blogs, editBlog, deleteBlog }) => {
   const [headline, setHeadline] = useState(null);
   const [news, setNews] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("general");
@@ -31,6 +32,8 @@ const News = ({ showBlogs, blogs }) => {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [bookmarks, setBookmarks] = useState([]);
   const [showBookmarks, setShowBookmarks] = useState(false);
+  const [showBlogsModal, setShowBlogsModal] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   /**
    * Fetches news articles based on the selected category and search query.
@@ -150,6 +153,16 @@ const News = ({ showBlogs, blogs }) => {
     }
   };
 
+  const handlePostClick = (post) => {
+    setSelectedPost(post);
+    setShowBlogsModal(true);
+  };
+
+  const closeBlogsModal = () => {
+    setShowBlogsModal(false);
+    setSelectedPost(null);
+  };
+
   return (
     <div className="news">
       {/* Header */}
@@ -176,7 +189,6 @@ const News = ({ showBlogs, blogs }) => {
           <div className="user">
             <img src={userImg} alt="User Image" />
             <p>Username</p>
-            <button onClick={() => showBlogs()}>Add Blog Post</button>
           </div>
           <nav className="nav">
             <h2 className="nav__heading">Categories</h2>
@@ -272,24 +284,53 @@ const News = ({ showBlogs, blogs }) => {
           onDeleteBookmark={handleBookmarkClick}
         />
         <div className="my-blogs">
-          <h3 className="my-blogs__heading">My Blogs</h3>
+          <div className="my-blogs__top">
+            <h3 className="my-blogs__heading">My Blogs</h3>
+            <button className="my-blogs__btn" onClick={() => showBlogs()}>
+              Add Blog Post
+            </button>
+          </div>
           <div className="my-blogs__posts">
             {/* eslint-disable-next-line react/prop-types */}
             {blogs.map((blog, index) => (
-              <div className="my-blogs__post" key={index}>
+              <div
+                className="my-blogs__post"
+                key={index}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePostClick(blog);
+                }}
+              >
                 <img src={blog.image} alt={blog.title} />
                 <h3>{blog.title}</h3>
                 <div className="my-blogs__post-btns">
-                  <button className="my-blogs__post-edit">
+                  <button
+                    className="my-blogs__post-edit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      editBlog(blog);
+                    }}
+                  >
                     <i className="bx bxs-edit"></i>
                   </button>
-                  <button className="my-blogs__post-delete">
+                  <button
+                    className="my-blogs__post-delete"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteBlog(blog);
+                    }}
+                  >
                     <i className="bx bxs-x-circle"></i>
                   </button>
                 </div>
               </div>
             ))}
           </div>
+          <BlogsModal
+            onClose={closeBlogsModal}
+            post={selectedPost}
+            show={showBlogsModal}
+          />
         </div>
         <div className="weather-calendar">
           <Weather />

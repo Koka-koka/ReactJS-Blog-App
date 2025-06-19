@@ -64,7 +64,7 @@
 .modal__link {
   display: inline-block;
   font-size: 1.6rem;
-  background: linear-gradient(to right, #b88efc, #9577f4);
+  background: linear-gradient(to right, #67cb7c, #8aa56c);
   color: #fff;
   padding: 1rem 2rem;
   border-radius: 1rem;
@@ -74,7 +74,7 @@
 }
 
 .modal__link:hover {
-  background: linear-gradient(to right, #9577f4, #b88efc);
+  background: linear-gradient(to right, #8aa56c, #67cb7c);
 }
 
 .modal__link:active {

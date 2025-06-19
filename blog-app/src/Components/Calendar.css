@@ -39,7 +39,7 @@
   background-color: #2c3542;
   border-radius: 50%;
   font-size: 2rem;
-  color: #b88efc;
+  color: #67cb7c;
   cursor: pointer;
 }
 
@@ -76,11 +76,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 }
 
 .current-day {
-  background-color: #b88efc;
+  background-color: #8aa56c;
   color: #fff;
   border-radius: 50%;
 }

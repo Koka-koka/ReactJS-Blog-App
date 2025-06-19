@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import userImg from "../assets/images/user.png";
 import noImg from "../assets/images/no-img.png";
 import "./Blogs.css";
 
 // eslint-disable-next-line react/prop-types
-function Blogs({ showNews, createBlog }) {
+function Blogs({ showNews, createBlog, editBlog, isEditing }) {
   const [showForm, setShowForm] = useState(false);
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -13,17 +13,39 @@ function Blogs({ showNews, createBlog }) {
   const [titleValid, setTitleValid] = useState(true);
   const [contentValid, setContentValid] = useState(true);
 
-  /**
-   * Handles the image upload event by reading the selected file
-   * and setting its data URL as the image state.
-   *
-   * @param {Object} e - The event object from the file input change event.
-   */
+  // Sets the state of the form based on the isEditing prop and the editPost prop.
+  useEffect(() => {
+    if (isEditing && editBlog) {
+      const { title, content, image } = editBlog;
+      setTitle(title);
+      setContent(content);
+      setImage(image);
+      setShowForm(true);
+    } else {
+      setTitle("");
+      setContent("");
+      setImage(null);
+    }
+  }, [isEditing, editBlog]);
 
+  /**
+   * Handles the image upload event.
+   * If the selected file exceeds the maximum size of 1MB, shows an alert.
+   * Otherwise, sets the state of the image to the uploaded image.
+   * @param {Object} e - The event object from the image upload event.
+   */
   const handleImageUpload = (e) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+
+      if (file.size > maxSize) {
+        alert("Image size should be less than 1MB");
+        return;
+      }
+
       const reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
       reader.onloadend = () => {
         setImage(reader.result);
       };
@@ -95,7 +117,7 @@ function Blogs({ showNews, createBlog }) {
       image: image || noImg,
     };
 
-    createBlog(newBlog);
+    createBlog(newBlog, isEditing);
     setImage(null);
     setTitle("");
     setContent("");
@@ -118,10 +140,10 @@ function Blogs({ showNews, createBlog }) {
           {submitted && (
             <p className="submit-message">Post was successfully created</p>
           )}
-          <h2>New Post</h2>
+          <h2>{isEditing ? "Edit Post" : "Create Post"}</h2>
           <form onSubmit={handleFormSubmit}>
             <div className="img-upload">
-              <img src={image || noImg} alt="" />
+              <img src={image || noImg} alt="Upload" />
               <label htmlFor="file-upload-input" className="file-upload">
                 <i className="bx bx-upload"></i>Upload Image
               </label>
@@ -156,7 +178,7 @@ function Blogs({ showNews, createBlog }) {
               </p>
             )}
             <button className="submit-btn" type="submit" disabled={submitted}>
-              Submit
+              {isEditing ? "Update Post" : "Submit Post"}
             </button>
           </form>
         </div>

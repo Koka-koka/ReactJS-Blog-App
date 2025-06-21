@@ -112,3 +112,12 @@
   font-size: 2rem;
   color: #ddd;
 }
+
+@media screen and (max-width: 1024px) {
+  .weather {
+    height: 100%;
+  }
+  .weather__search-location input {
+    width: 25rem;
+  }
+}

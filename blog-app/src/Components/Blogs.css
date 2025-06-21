@@ -203,3 +203,40 @@
   align-items: center;
   cursor: pointer;
 }
+
+@media screen and (max-width: 900px) {
+  .blogs__left {
+    display: none;
+  }
+
+  .blogs__right {
+    width: 100%;
+  }
+
+  .blogs__right-form.visible {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .blogs__right-form form {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .blogs__right-form form input,
+  .blogs__right-form form textarea {
+    width: 65%;
+  }
+
+  .submit-btn {
+    width: 15rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .blogs__right-form form input,
+  .blogs__right-form form textarea {
+    width: 80%;
+  }
+}

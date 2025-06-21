@@ -71,6 +71,13 @@ const App = () => {
     setShowBlogs(true);
   };
 
+  /**
+   * Deletes a blog post.
+   * Asks the user for confirmation before deleting.
+   * If confirmed, removes the blog post from the state and local storage.
+   * @param {Object} blog - The blog post to delete.
+   * @function
+   */
   const handleDeleteBlog = (blog) => {
     const answer = confirm("Are you sure you want to delete this blog post?");
 

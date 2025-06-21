@@ -83,3 +83,9 @@
   color: #fff;
   border-radius: 50%;
 }
+
+@media screen and (max-width: 1024px) {
+  .calendar {
+    height: 100%;
+  }
+}

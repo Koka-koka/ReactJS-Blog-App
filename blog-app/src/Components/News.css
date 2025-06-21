@@ -103,10 +103,6 @@
   color: #ddd;
 }
 
-.user button:active {
-  transform: translateY(0.2rem);
-}
-
 .nav {
   width: 100%;
   height: calc(75% - 2rem);
@@ -288,6 +284,10 @@
   background: linear-gradient(to right, #8aa56c, #67cb7c);
 }
 
+.my-blogs__btn:active {
+  transform: translateY(0.2rem);
+}
+
 .my-blogs__posts {
   display: flex;
   flex-wrap: wrap;
@@ -371,4 +371,180 @@
   padding: 0 4rem;
   font-size: 1.4rem;
   color: #bbb;
+}
+
+@media screen and (max-width: 1440px) {
+  .nav__menu {
+    gap: 1rem;
+  }
+
+  .news__section {
+    overflow: hidden;
+  }
+
+  .news__grid {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    overflow-y: scroll;
+    scrollbar-color: #1d1e20 #111214;
+  }
+
+  .my-blogs__top {
+    flex-direction: column;
+  }
+
+  .my-blogs__heading {
+    text-align: center;
+  }
+
+  .my-blogs__btn {
+    width: 150px;
+  }
+
+  .my-blogs__post {
+    flex: 0 1 calc(100% - 0.6rem);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .news {
+    overflow-y: scroll;
+    scrollbar-color: #1d1e20 #111214;
+  }
+
+  .news__content {
+    flex-direction: column;
+    width: 100%;
+    height: 200rem;
+    gap: 2rem;
+  }
+
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 18rem;
+    margin-bottom: 2rem;
+  }
+
+  .user {
+    width: calc(30% - 2rem);
+    height: 100%;
+  }
+
+  .nav {
+    width: 70%;
+    height: 100%;
+  }
+
+  .nav__menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .headline {
+    height: calc(40% - 2rem);
+  }
+
+  .news__section {
+    width: 100%;
+    height: 220rem;
+  }
+
+  .news__grid {
+    height: 60%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  .my-blogs {
+    width: 100%;
+    height: 70%;
+  }
+
+  .my-blogs__post {
+    flex: 0 1 calc(50% - 0.6rem);
+  }
+
+  .weather-calendar {
+    flex-direction: row;
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  .news__header {
+    padding: 0 2rem;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 15rem;
+    row-gap: 1rem;
+  }
+
+  .news__content {
+    height: 270rem;
+  }
+
+  .logo {
+    font-size: 3.5rem;
+  }
+
+  .navbar {
+    flex-direction: column;
+    height: 30rem;
+  }
+
+  .user {
+    width: 100%;
+    min-height: 45%;
+  }
+
+  .nav {
+    width: 100%;
+    min-height: 55%;
+  }
+
+  .news__grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+  .my-blogs {
+    height: 150rem;
+  }
+
+  .my-blogs__posts {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .weather-calendar {
+    flex-direction: column;
+  }
+
+  .news__footer {
+    min-height: 8rem;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .news__section {
+    height: 150rem;
+  }
+
+  .news__grid {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+  }
+
+  .news__grid-item {
+    min-height: 25rem;
+  }
+
+  .my-blogs {
+    height: 120rem;
+  }
 }
